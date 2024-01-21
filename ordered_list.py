@@ -125,15 +125,15 @@ class doubly_Ordered_List:
         # item was not in list
         return False
     
-
-
     def index(self, item): 
         '''Returns index of the first occurrence of an item in OrderedList (assuming head of 
         list is index 0). If item is not in list, return None MUST have O(n) average-case performance''' 
         #check if list is empty
-        if self.is_empty() is True:
+        if self.is_empty():
             return None
         else:
+            index = 0
+            current_node = self.head
             while current_node is not None:
                 # check if current node is the item
                 if current_node.value == item:
@@ -147,10 +147,36 @@ class doubly_Ordered_List:
     def pop(self, index): 
         '''Removes and returns item at index (assuming head of list is index 0). If index is 
         negative or >= size of list, raises IndexError MUST have O(n) average-case performance''' 
+        if self.is_empty():
+            raise IndexError("List is empty") 
+        else:
+            current_node = self.head
+            current_index = 0
+            while current_node is not None:
+                if current_index == index:
+                    '''rewriting remove code rather than calling remove method, 
+                    so it doesnt have to traverse the list again'''
+                    # check if the current node is the head
+                    if current_node == self.head:
+                        self.head = current_node.next_node
+                        return current_node.value
+                    # check if the current node is the tail
+                    elif current_node == self.tail:
+                        self.tail = current_node.prev_node
+                        return current_node.value
+                    else:
+                        current_node.prev_node.next_node = current_node.next_node
+                        current_node.next_node.prev_node = current_node.prev_node
+                        return current_node.value
+                else:
+                    current_node = current_node.next_node
+                    current_index += 1
+            raise IndexError("Index out of range")
 
     pass 
     
     def search(self, item): 
+
         '''Searches OrderedList for item, returns True if item is in list, False otherwise" 
         To practice recursion, this method must call a RECURSIVE method that will search the list 
         MUST have O(n) average-case performance''' 
