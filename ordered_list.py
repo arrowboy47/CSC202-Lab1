@@ -33,15 +33,13 @@ class doubly_Ordered_List:
             return self.head
  
     '''A doubly-linked ordered list of items, from lowest (head of list) to highest (tail of list)''' 
+    '''Returns True if OrderedList is empty MUST have O(1) performance''' 
     def is_empty(self):
         if self.head is None:
             return True
         else:
             print("List is not empty")
             return False
-
-        '''Returns True if OrderedList is empty MUST have O(1) performance''' 
-    pass 
  
     def add(self, item): 
         '''Adds an item to OrderedList, in the proper location based on ordering of items 
@@ -50,67 +48,106 @@ class doubly_Ordered_List:
         MUST have O(n) average-case performance''' 
         new_node = Node(item)
 
-
-        
-        # condition to check if the list is empty
-        if self.head is None:
+        # determine the starting position
+        # check if there is an average value and list isnt empty
+        if self.average is None and self.is_empty() is False:
+            self.get_avg()
+            startpos = self.det_start_pos(item)
+        elif self.is_empty() is True:
+            # condition to check if the list is empty
             self.head = new_node
             self.tail = new_node
             return True
         else:
-            current_node = self.head
-            while current_node is not None:
-                # check if current node is the item
-                if current_node.value == item:
-                    return False
-                # check if value is greater than the current node
-                if current_node.value < item:
-                    # add it after current node
-                    new_node.next_node = current_node.next_node
-                    current_node.next_node = new_node
-                    return True
-                else:
+            # condition where avg is already calculated
+            startpos = self.det_start_pos(item)
+
+        current_node = startpos
+        while current_node is not None:
+            # check if current node is the item
+            if current_node.value == item:
+                return False
+            # check if value is greater than the current node
+            if current_node.value < item:
+                # add it after current node
+                new_node.next_node = current_node.next_node
+                new_node.prev_node = current_node
+                current_node.next_node = new_node
+                return True
+            else:
+                # determine derection to go
+                if startpos == self.head:
                     current_node = current_node.next_node
-    pass 
-    
+                else:
+                    current_node = current_node.prev_node
+
+
     def remove(self, item): 
         '''Removes the first occurrence of an item from OrderedList. If item is removed (was in the list) 
         returns True.  If item was not removed (was not in the list) returns False 
         MUST have O(n) average-case performance'''
-        # check if the list is empty
-        if self.head is None:
+
+        # determine the starting position
+        # check if there is an average value and list isnt empty
+        if self.average is None and self.is_empty() is False:
+            self.get_avg()
+            startpos = self.det_start_pos(item)
+        elif self.is_empty() is True:
+            # condition to check if the list is empty
             return False
         else:
-            current_node = self.head
-            while current_node is not None:
-                # check if current node is the item
-                if current_node.value == item:
-                    # check if the current node is the head
-                    if current_node == self.head:
-                        self.head = current_node.next_node
-                        return True
-                    # check if the current node is the tail
-                    elif current_node == self.tail:
-                        self.tail = current_node.prev_node
-                        return True
-                    else:
-                        current_node.prev_node.next_node = current_node.next_node
-                        current_node.next_node.prev_node = current_node.prev_node
-                        return True
+            # condition where avg is already calculated
+            startpos = self.det_start_pos(item)
+
+        current_node = startpos
+        while current_node is not None:
+            # check if current node is the item
+            if current_node.value == item:
+                # check if the current node is the head
+                if current_node == self.head:
+                    self.head = current_node.next_node
+                    return True
+                # check if the current node is the tail
+                elif current_node == self.tail:
+                    self.tail = current_node.prev_node
+                    return True
                 else:
+                    current_node.prev_node.next_node = current_node.next_node
+                    current_node.next_node.prev_node = current_node.prev_node
+                    return True
+            else:
+                # determine derection to go
+                if startpos == self.head:
                     current_node = current_node.next_node
-            # item was not in list
-            return False
-    pass 
+                else:
+                    current_node = current_node.prev_node
+
+        # item was not in list
+        return False
     
+
+
     def index(self, item): 
         '''Returns index of the first occurrence of an item in OrderedList (assuming head of 
         list is index 0). If item is not in list, return None MUST have O(n) average-case performance''' 
-    pass 
+        #check if list is empty
+        if self.is_empty() is True:
+            return None
+        else:
+            while current_node is not None:
+                # check if current node is the item
+                if current_node.value == item:
+                    return index
+                else:
+                    current_node = current_node.next_node
+                    index += 1
+            # item was not in list
+            return None
     
     def pop(self, index): 
         '''Removes and returns item at index (assuming head of list is index 0). If index is 
         negative or >= size of list, raises IndexError MUST have O(n) average-case performance''' 
+
     pass 
     
     def search(self, item): 
