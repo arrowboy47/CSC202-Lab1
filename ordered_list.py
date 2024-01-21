@@ -149,6 +149,8 @@ class doubly_Ordered_List:
         negative or >= size of list, raises IndexError MUST have O(n) average-case performance''' 
         if self.is_empty():
             raise IndexError("List is empty") 
+        elif index < 0:
+            raise IndexError("Index out of range")
         else:
             current_node = self.head
             current_index = 0
@@ -172,11 +174,8 @@ class doubly_Ordered_List:
                     current_node = current_node.next_node
                     current_index += 1
             raise IndexError("Index out of range")
-
-    pass 
     
     def search(self, item): 
-
         '''Searches OrderedList for item, returns True if item is in list, False otherwise" 
         To practice recursion, this method must call a RECURSIVE method that will search the list 
         MUST have O(n) average-case performance''' 
@@ -186,7 +185,15 @@ class doubly_Ordered_List:
         '''Return a Python list representation of OrderedList, from head to tail 
         For example, list with integers 1, 2, and 3 would return [1, 2, 3] 
         MUST have O(n) performance''' 
-    pass 
+        if self.is_empty():
+            return []
+        else:
+            converted_list = []
+            current_node = self.head
+            while current_node is not None:
+                converted_list.append(current_node.value)
+                current_node = current_node.next_node
+            return converted_list
     
     def python_list_reversed(self): 
         '''Return a Python list representation of OrderedList, from tail to head, using 
