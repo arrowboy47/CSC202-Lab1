@@ -1,16 +1,36 @@
-from dataclasses import dataclass  
+from dataclasses import dataclass 
 @dataclass 
 class Node:
     value: int     
     prev_node: None     
     next_node: None    
          
-
 @dataclass 
 class doubly_Ordered_List: 
     head: 'Node' = None
     tail: 'Node' = None
+    # average of all the values in the list
+    average: int = None
 
+    # going to be used to determine wither the starting node is the head or tail
+    def get_avg(self):
+        current_node = self.head
+        sum = 0
+        count = 0
+        while current_node is not None:
+            sum += current_node.value
+            count += 1
+            current_node = current_node.next_node
+        self.average = sum/count
+        return self.average
+
+    def det_start_pos(self, value):
+        if self.average > value:
+            return self.head
+        elif self.average < value:
+            return self.tail
+        else:
+            return self.head
  
     '''A doubly-linked ordered list of items, from lowest (head of list) to highest (tail of list)''' 
     def is_empty(self):
@@ -29,6 +49,9 @@ class doubly_Ordered_List:
         If the item is already in the list, do not add it again and return False. 
         MUST have O(n) average-case performance''' 
         new_node = Node(item)
+
+
+        
         # condition to check if the list is empty
         if self.head is None:
             self.head = new_node
@@ -40,14 +63,44 @@ class doubly_Ordered_List:
                 # check if current node is the item
                 if current_node.value == item:
                     return False
-            
-
+                # check if value is greater than the current node
+                if current_node.value < item:
+                    # add it after current node
+                    new_node.next_node = current_node.next_node
+                    current_node.next_node = new_node
+                    return True
+                else:
+                    current_node = current_node.next_node
     pass 
     
     def remove(self, item): 
         '''Removes the first occurrence of an item from OrderedList. If item is removed (was in the list) 
         returns True.  If item was not removed (was not in the list) returns False 
-        MUST have O(n) average-case performance''' 
+        MUST have O(n) average-case performance'''
+        # check if the list is empty
+        if self.head is None:
+            return False
+        else:
+            current_node = self.head
+            while current_node is not None:
+                # check if current node is the item
+                if current_node.value == item:
+                    # check if the current node is the head
+                    if current_node == self.head:
+                        self.head = current_node.next_node
+                        return True
+                    # check if the current node is the tail
+                    elif current_node == self.tail:
+                        self.tail = current_node.prev_node
+                        return True
+                    else:
+                        current_node.prev_node.next_node = current_node.next_node
+                        current_node.next_node.prev_node = current_node.prev_node
+                        return True
+                else:
+                    current_node = current_node.next_node
+            # item was not in list
+            return False
     pass 
     
     def index(self, item): 
