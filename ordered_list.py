@@ -46,7 +46,7 @@ class doubly_Ordered_List:
         from lowest (at head of list) to highest (at tail of list) and returns True. 
         If the item is already in the list, do not add it again and return False. 
         MUST have O(n) average-case performance''' 
-        new_node = Node(item)
+        new_node = Node(item, None, None)
 
         # determine the starting position
         # check if there is an average value and list isnt empty
@@ -57,6 +57,7 @@ class doubly_Ordered_List:
             # condition to check if the list is empty
             self.head = new_node
             self.tail = new_node
+            self.average = item
             return True
         else:
             # condition where avg is already calculated
@@ -179,7 +180,20 @@ class doubly_Ordered_List:
         '''Searches OrderedList for item, returns True if item is in list, False otherwise" 
         To practice recursion, this method must call a RECURSIVE method that will search the list 
         MUST have O(n) average-case performance''' 
-    pass 
+        if self.is_empty():
+            return False
+        else:
+            return self.search_rec(item, self.head)
+        
+    # helper method for search
+    def search_rec(self, item, current_node):
+        if current_node is None:
+            return False
+        elif current_node.value == item:
+            return True
+        else:
+            return self.search_rec(item, current_node.next_node)
+
     
     def python_list(self): 
         '''Return a Python list representation of OrderedList, from head to tail 
@@ -196,13 +210,29 @@ class doubly_Ordered_List:
             return converted_list
     
     def python_list_reversed(self): 
-        '''Return a Python list representation of OrderedList, from tail to head, using 
+        '''Return a Python list representation of OrderedList, from tail to head, using
         recursion For example, list with integers 1, 2, and 3 would return [3, 2, 1] 
         To practice recursion, this method must call a RECURSIVE method that 
         will return a reversed list MUST have O(n) performance''' 
-    pass 
+        return self.list_reverse_rec(self.head)
     
-    def size(self): 
+    # helper method for python_list_reversed
+    def list_reverse_rec(self, current):
+        if current is None:
+            return []
+        else:
+            # once it reaches the end of the list, it will start returning the values
+            # each instance of method call with return the value of the current node
+            rest_of_list = self.list_reverse_rec(current.next_node)
+            return rest_of_list + [current.value] 
+    
+    def size(self):
+        return self.size_rec(self.head)
+
+    def size_rec(self, current_node): 
         '''Returns number of items in the OrderedList To practice recursion, this method must call a RECURSIVE 
         method that will count and return the number of items in the list MUST have O(n) performance''' 
-    pass
+        if current_node is None:
+            return 0
+        else:
+            return self.size_rec(current_node.next_node) + 1

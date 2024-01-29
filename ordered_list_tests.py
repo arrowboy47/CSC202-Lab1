@@ -4,7 +4,7 @@ from ordered_list import *
 class TestLab4(unittest.TestCase): 
  
     def test_simple(self): 
-        t_list = OrderedList() 
+        t_list = doubly_Ordered_List() 
         t_list.add(10) 
         self.assertEqual(t_list.python_list(), [10]) 
         self.assertEqual(t_list.size(), 1) 
